@@ -1,0 +1,7 @@
+{
+    "require": {
+        "aws/aws-sdk-php": "^3.22",
+        "elasticsearch/elasticsearch": "~5.0",
+        "monolog/monolog": "~1.0"
+    }
+}
