@@ -9,24 +9,39 @@ class ElasticIndexer {
 
     private $logger;
 
-    private $elastic;
+    /**
+     * Client
+     * @var mixed
+     */
+    private $client;
 
-    private $elasticParams = [
-        'index' => 'vams-events',
-        'type' => 'content-view',
-    ];
+    /**
+     * Hods the vars that will be passed to the index call
+     * @var mixed
+     */
+    private $clientParams = [];
 
-    public function __construct(LoggerInterface $logger, Client $elastic) {
+    public function __construct(LoggerInterface $logger, Client $client) {
         $this->logger = $logger;
-        $this->elastic = $elastic;
+        $this->client = $client;
+    }
+
+    public function setIndex(string $index)
+    {
+        $this->clientParams['index'] = $index;
+    }
+
+    public function setType(string $type)
+    {
+        $this->clientParams['type'] = $type;
     }
 
     public function indexOne(string $id, \stdClass $body)
     {
-        $this->elasticParams['id'] = $id;
-        $this->elasticParams['body'] = $body;
+        $this->clientParams['id'] = $id;
+        $this->clientParams['body'] = $body;
 
-        $response = $this->elastic->index($this->elasticParams);
+        $response = $this->client->index($this->clientParams);
 
         $this->logger->debug('', $response);
     }
